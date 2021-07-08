@@ -21,13 +21,3 @@
 # client-go
 
 [github](https://github.com/kubernetes/client-go/tree/master/examples)
-
-# demo
-
-## KubernetesDemo
-
-main.go contains some operations on kubernetes basic components
-
-dynamicclient.go contains operations on crd using dynamic client
-
-crd.go contains basic operations on crd, but it does not work
