@@ -1,4 +1,4 @@
-package main
+package dynamicclient
 
 import (
 	"context"
@@ -16,6 +16,7 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/client-go/util/retry"
 	"log"
+	"mky.example.com/kubernetes/cfg"
 )
 
 const metaCRD = `
@@ -31,7 +32,7 @@ spec:
 
 func GetK8sConfig() (*rest.Config, error) {
 
-	config, err := clientcmd.BuildConfigFromFlags("", *getCfgPathFromHome())
+	config, err := clientcmd.BuildConfigFromFlags("", *cfg.GetCfgPathFromHome())
 	if err != nil {
 		panic(err)
 	}
@@ -154,7 +155,7 @@ func updateCRD1(){
 	}
 }
 
-func updateCRD2(){
+func UpdateCRD2(replicas int){
 	dr, obj := dynamicclient()
 	retryErr := retry.RetryOnConflict(retry.DefaultRetry, func() (err error) {
 		// 查询resource是否存在
@@ -163,7 +164,7 @@ func updateCRD2(){
 			panic(fmt.Errorf("failed to get latest version of : %v", err))
 		}
 		spec := make(map[string]interface{})
-		spec["replicas"] = int64(1)//work
+		spec["replicas"] = int64(replicas)//work
 		if err := unstructured.SetNestedMap(result.Object, spec, "spec", ); err != nil {
 			panic(err)
 		}

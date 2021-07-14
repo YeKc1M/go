@@ -2,17 +2,13 @@ package main
 
 import (
 	"context"
-	"flag"
 	"fmt"
-	"path/filepath"
+	"mky.example.com/kubernetes/dynamicclient"
 	"time"
 
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
-	restclient "k8s.io/client-go/rest"
-	"k8s.io/client-go/tools/clientcmd"
-	"k8s.io/client-go/util/homedir"
 )
 
 func main() {
@@ -23,43 +19,7 @@ func main() {
 	//crd1(getClientset())
 	//getCRD()
 	//updateCRD1()
-	updateCRD2()
-}
-
-func getCfgPathFromHome() *string{
-	var kubeconfig *string
-	home := homedir.HomeDir()
-	fmt.Printf("homeDir: %s\n", home)
-	if home != "" {
-		kubeconfig = flag.String("kubeconfig", filepath.Join(home, ".kube", "reggie_config"), "(optional) absolute path to the kubeconfig file")
-	}else {
-		kubeconfig = flag.String("kubeconfig", "", "absolute path to the kubeconfig file")
-	}
-	return kubeconfig
-}
-
-func getConfigFromPath(path *string) *restclient.Config {
-	config, err := clientcmd.BuildConfigFromFlags("", *path)
-	if err != nil {
-		panic(err.Error())
-	}
-	return config
-}
-
-func getClientset() *kubernetes.Clientset{
-	kubeconfig := getCfgPathFromHome()
-	fmt.Println(*kubeconfig)
-	flag.Parse()
-
-	//use current context in kubeconfig
-	config := getConfigFromPath(kubeconfig)
-
-	//create clientset
-	clientset, err := kubernetes.NewForConfig(config)
-	if err != nil {
-		panic(err.Error())
-	}
-	return clientset
+	dynamicclient.UpdateCRD2(2)
 }
 
 func getAllPods(clientset *kubernetes.Clientset) {

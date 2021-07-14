@@ -10,6 +10,7 @@ import (
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/kubernetes/scheme"
 	"k8s.io/client-go/rest"
+	"mky.example.com/kubernetes/cfg"
 )
 
 //define type
@@ -78,7 +79,7 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 
 //construct client
 func crd(){
-	crdCfg := *getConfigFromPath(getCfgPathFromHome())
+	crdCfg := *cfg.GetConfigFromPath(cfg.GetCfgPathFromHome())
 	crdCfg.ContentConfig.GroupVersion = &schema.GroupVersion{
 		Group:v1alpha1.GroupName,
 		Version:"v1alpha1",
