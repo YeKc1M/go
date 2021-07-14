@@ -8,7 +8,7 @@ some note for go
 
 # demos
 
-## KubernetesDemo
+## DynamicClientDemo
 
 main.go contains some operations on kubernetes basic components
 
