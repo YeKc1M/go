@@ -1,4 +1,4 @@
-module KubernetesDemo
+module dynamicclientdemo
 
 go 1.16
 

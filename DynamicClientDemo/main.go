@@ -2,8 +2,8 @@ package main
 
 import (
 	"context"
+	"dynamicclientdemo/dynamicclient"
 	"fmt"
-	"mky.example.com/kubernetes/dynamicclient"
 	"time"
 
 	"k8s.io/apimachinery/pkg/api/errors"
@@ -15,7 +15,7 @@ func main() {
 	//clientset := getClientset()
 	//getAllPods(clientset)
 	//findPod(clientset)
-	dynamicclient.UpdateCRD2(2)
+	dynamicclient.UpdateCRD2(3)
 }
 
 func getAllPods(clientset *kubernetes.Clientset) {

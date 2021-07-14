@@ -16,7 +16,7 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/client-go/util/retry"
 	"log"
-	"mky.example.com/kubernetes/cfg"
+	"dynamicclientdemo/cfg"
 )
 
 const metaCRD = `
