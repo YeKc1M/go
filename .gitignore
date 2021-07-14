@@ -1,1 +1,4 @@
 *.idea
+typedclientdemo/cmd/*
+typedclientdemo/hack/*
+*.sh
