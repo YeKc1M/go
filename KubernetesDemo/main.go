@@ -15,10 +15,6 @@ func main() {
 	//clientset := getClientset()
 	//getAllPods(clientset)
 	//findPod(clientset)
-	//crd()
-	//crd1(getClientset())
-	//getCRD()
-	//updateCRD1()
 	dynamicclient.UpdateCRD2(2)
 }
 
@@ -67,14 +63,4 @@ func findPod(clientset *kubernetes.Clientset){
 	name := pod.ObjectMeta.Name
 	ip := pod.Status.PodIP
 	fmt.Printf("pod %s: %s\n", name, ip)
-}
-
-func test(clientset *kubernetes.Clientset){
-	//pod, err := clientset.CoreV1().
-	//if err != nil {
-	//	panic(err.Error())
-	//}
-	//name := pod.ObjectMeta.Name
-	//ip := pod.Status.PodIP
-	//fmt.Printf("pod %s: %s", name, ip)
 }

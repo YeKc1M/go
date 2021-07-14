@@ -12,9 +12,9 @@ some note for go
 
 main.go contains some operations on kubernetes basic components
 
-dynamicclient.go contains operations on crd using dynamic client
+dynamicclient package contains operations on crd using dynamic client
 
-crd.go contains basic operations on crd, but it does not work
+apis package contains operations on crd using typed client, but it does not work
 
 # to do
 

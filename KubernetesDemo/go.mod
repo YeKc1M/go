@@ -1,4 +1,4 @@
-module mky.example.com/kubernetes
+module KubernetesDemo
 
 go 1.16
 
