@@ -14,8 +14,6 @@ main.go contains some operations on kubernetes basic components
 
 dynamicclient package contains operations on crd using dynamic client
 
-apis package contains operations on crd using typed client, but it does not work
-
 ## typedclientdemo
 
 operations on crd based on typed client without code-generation
