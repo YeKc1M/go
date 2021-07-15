@@ -16,6 +16,10 @@ dynamicclient package contains operations on crd using dynamic client
 
 apis package contains operations on crd using typed client, but it does not work
 
+## typedclientdemo
+
+operations on crd based on typed client without code-generation
+
 # to do
 
 [sample-controller](https://github.com/kubernetes/sample-controller)
