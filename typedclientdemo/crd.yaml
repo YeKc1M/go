@@ -26,6 +26,6 @@ spec:
 apiVersion: foo.com/v1
 kind: HelloType
 metadata:
-  name: hello
+  name: hello1
 spec:
   message: hello world

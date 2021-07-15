@@ -13,7 +13,7 @@ var SchemeGroupVersion = schema.GroupVersion{
 }
 
 var (
-	SchemeBuilder      runtime.SchemeBuilder
+	SchemeBuilder = runtime.NewSchemeBuilder(addKnownTypes)
 	localSchemeBuilder = &SchemeBuilder
 	AddToScheme        = localSchemeBuilder.AddToScheme
 )
