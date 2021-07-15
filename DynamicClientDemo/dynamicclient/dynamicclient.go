@@ -2,6 +2,7 @@ package dynamicclient
 
 import (
 	"context"
+	"dynamicclientdemo/cfg"
 	"fmt"
 	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -16,7 +17,6 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/client-go/util/retry"
 	"log"
-	"dynamicclientdemo/cfg"
 )
 
 const metaCRD = `
@@ -30,8 +30,7 @@ spec:
 `
 
 
-func GetK8sConfig() (*rest.Config, error) {
-
+func GetCfgOutsideCluster() (*rest.Config, error) {
 	config, err := clientcmd.BuildConfigFromFlags("", *cfg.GetCfgPathFromHome())
 	if err != nil {
 		panic(err)
@@ -39,10 +38,14 @@ func GetK8sConfig() (*rest.Config, error) {
 	return config, err
 }
 
+func GetCfgInsideCluster() (*rest.Config, error)  {
+	return rest.InClusterConfig()
+}
+
 func GetGVRdyClient(gvk *schema.GroupVersionKind,namespace string) (dynamic.ResourceInterface, error)  {
 	var dr dynamic.ResourceInterface
 	//rest.InClusterConfig() used for in-cluster service account auth, it may work, maybe.
-	config,err := GetK8sConfig()
+	config,err := GetCfgOutsideCluster()
 	if err != nil {
 		panic(err.Error())
 	}
@@ -110,9 +113,9 @@ func dynamicclient() (dynamic.ResourceInterface, *unstructured.Unstructured){
 	//}
 }
 
-func getCRD() {
-	dr, obj := dynamicclient()
-	objGet, err := dr.Get(context.TODO(), obj.GetName(), metav1.GetOptions{})
+func GetCRD(crname string) {
+	dr, _ := dynamicclient()
+	objGet, err := dr.Get(context.TODO(), crname, metav1.GetOptions{})
 	if err != nil {
 		panic(err.Error())
 	}
@@ -125,50 +128,21 @@ func getCRD() {
 	fmt.Println(spec)
 }
 
-func updateCRD1(){
-	dr, obj := dynamicclient()
-	retryErr := retry.RetryOnConflict(retry.DefaultRetry, func() (err error) {
-		// 查询resource是否存在
-		result, err := dr.Get(context.TODO(), obj.GetName(),metav1.GetOptions{})
-		if err != nil {
-			panic(fmt.Errorf("failed to get latest version of : %v", err))
-		}
-		// 提取obj 的 spec 期望值
-		spec, found, err := unstructured.NestedMap(obj.Object, "spec")
-		//fmt.Println(reflect.TypeOf(spec["replicas"]))//int64
-		if err != nil || !found || spec == nil {
-			panic(fmt.Errorf("not found or error in spec: %v", err))
-		}
-		// 更新 存在资源的spec
-		if err := unstructured.SetNestedMap(result.Object, spec, "spec", ); err != nil {
-			panic(err)
-		}
-		// 更新资源
-		objUpdate, err := dr.Update(context.TODO(), result,metav1.UpdateOptions{})
-		log.Print("update : ",objUpdate)
-		return err
-	})
-	if retryErr != nil {
-		panic(fmt.Errorf("update failed: %v", retryErr))
-	} else {
-		log.Print("更新成功")
-	}
-}
-
 func UpdateCRD2(replicas int){
 	dr, obj := dynamicclient()
 	retryErr := retry.RetryOnConflict(retry.DefaultRetry, func() (err error) {
-		// 查询resource是否存在
+		// check if resource exists
 		result, err := dr.Get(context.TODO(), obj.GetName(),metav1.GetOptions{})
 		if err != nil {
 			panic(fmt.Errorf("failed to get latest version of : %v", err))
 		}
+		// update spec
 		spec := make(map[string]interface{})
 		spec["replicas"] = int64(replicas)//work
 		if err := unstructured.SetNestedMap(result.Object, spec, "spec", ); err != nil {
 			panic(err)
 		}
-		// 更新资源
+		// update resource
 		objUpdate, err := dr.Update(context.TODO(), result,metav1.UpdateOptions{})
 		log.Print("update : ",objUpdate)
 		return err

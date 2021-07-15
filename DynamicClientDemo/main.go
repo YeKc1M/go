@@ -15,7 +15,8 @@ func main() {
 	//clientset := getClientset()
 	//getAllPods(clientset)
 	//findPod(clientset)
-	dynamicclient.UpdateCRD2(3)
+	dynamicclient.UpdateCRD2(1)
+	//dynamicclient.GetCRD("example-project")
 }
 
 func getAllPods(clientset *kubernetes.Clientset) {
