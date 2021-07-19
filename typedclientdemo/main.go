@@ -40,8 +40,14 @@ func testHtClientUpdate(){
 	if err != nil {
 		panic(err)
 	}
-	before.Spec.Message = "update2"
-	updatedRes, err := htclient.Update(before)
+	//var update v1.HelloType
+	//before.DeepCopyInto(&update)
+	//update.Name = "updated"
+	//update.Spec.Message = "new update function"
+	//update.Status
+	//updatedRes, err := htclient.Update(before, &update, v12.UpdateOptions{})
+	before.Spec.Message = "update1321313"
+	updatedRes, err := htclient.Update(before, v12.UpdateOptions{})
 	if err != nil {
 		panic(err)
 	}

@@ -75,8 +75,32 @@ func (c *helloTypeClient) Watch(opts metav1.ListOptions) (watch.Interface, error
 		Watch(context.Background())
 }
 
-func (c *helloTypeClient) Update(updatedHt *v1.HelloType) (*v1.HelloType, error) {
+// updated name must equal to origin name
+func (c *helloTypeClient) Update(updatedHt *v1.HelloType, opts metav1.UpdateOptions) (*v1.HelloType, error) {
 	result := v1.HelloType{}
-	err := c.restClient.Put().Namespace(c.namespace).Resource("hellotypes").Name(updatedHt.Name).Body(updatedHt).Do(context.TODO()).Into(&result)
+	err := c.restClient.
+		Put().
+		Namespace(c.namespace).
+		Resource("hellotypes").
+		Name(updatedHt.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(updatedHt).
+		Do(context.TODO()).
+		Into(&result)
 	return &result, err
 }
+
+// updated name must equal to origin name
+//func (c *helloTypeClient) Update(origin *v1.HelloType, updated *v1.HelloType, opts metav1.UpdateOptions) (*v1.HelloType, error) {
+//	result := v1.HelloType{}
+//	err := c.restClient.
+//		Put().
+//		Namespace(c.namespace).
+//		Resource("hellotypes").
+//		Name(origin.Name).
+//		VersionedParams(&opts, scheme.ParameterCodec).
+//		Body(updated).
+//		Do(context.TODO()).
+//		Into(&result)
+//	return &result, err
+//}
