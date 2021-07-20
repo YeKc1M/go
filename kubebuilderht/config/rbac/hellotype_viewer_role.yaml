@@ -1,0 +1,20 @@
+# permissions for end users to view hellotypes.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: hellotype-viewer-role
+rules:
+- apiGroups:
+  - foo.com
+  resources:
+  - hellotypes
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - foo.com
+  resources:
+  - hellotypes/status
+  verbs:
+  - get

@@ -1,0 +1,24 @@
+# permissions for end users to edit hellotypes.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: hellotype-editor-role
+rules:
+- apiGroups:
+  - foo.com
+  resources:
+  - hellotypes
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - foo.com
+  resources:
+  - hellotypes/status
+  verbs:
+  - get

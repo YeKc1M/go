@@ -1,0 +1,7 @@
+apiVersion: foo.com.my.domain/v1
+kind: HelloType
+metadata:
+  name: hellotype-sample
+spec:
+  # Add fields here
+  foo: bar
