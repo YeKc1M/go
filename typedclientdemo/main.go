@@ -11,7 +11,14 @@ import (
 func main() {
 	//test1()
 	//testHtClientGet()
-	testHtClientUpdate()
+	//testHtClientUpdate()
+	//testInformer()
+	//testWatch()
+
+	deployClient := getDeployClient()
+	deploy := GetDeploy(deployClient, "hello-node")
+	//UpdateDeployReplica(deployClient, deploy, 1)
+	WatchDeploy(deployClient, deploy)
 }
 
 func test1() {
@@ -52,4 +59,34 @@ func testHtClientUpdate(){
 		panic(err)
 	}
 	fmt.Println(updatedRes)
+}
+
+func testWatch() {
+	htclient := client.NewHelloTypeClient("default")
+	w, err := htclient.Watch(v12.ListOptions{})
+	if err != nil {
+		panic(err)
+	}
+	for true {
+		select {
+		case event, b := <-w.ResultChan():
+			if b {
+				fmt.Println(event, b)
+			}
+		}
+	}
+}
+
+
+func testInformer(){
+	htclient := client.NewHelloTypeClient("default")
+	store := client.WatchResources(htclient)
+	res, exst, err := store.GetByKey("default/hellotype")
+	if err != nil {
+		panic(err)
+	}
+	if exst {
+		fmt.Println(res)
+	}
+	fmt.Println(store)
 }

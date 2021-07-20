@@ -1,0 +1,6 @@
+apiVersion: foo.com/v1
+kind: HelloType
+metadata:
+  name: hello
+spec:
+  message: hello world
