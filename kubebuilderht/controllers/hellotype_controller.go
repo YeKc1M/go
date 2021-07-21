@@ -23,6 +23,7 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
+	"time"
 
 	foocomv1 "kubebuilderht/hellotype/api/v1"
 )
@@ -51,11 +52,13 @@ func (r *HelloTypeReconciler) Reconcile(ctx context.Context, req ctrl.Request) (
 
 	// your logic here
 	ht := foocomv1.HelloType{}
+	//there will be an error if an ht is deleted
 	err := r.Get(context.TODO(), req.NamespacedName, &ht)
 	if err != nil {
 		panic(err)
 	}
 	fmt.Println(ht)
+	fmt.Println(time.Now())
 	fmt.Println("---------------------------")
 
 	return ctrl.Result{}, nil

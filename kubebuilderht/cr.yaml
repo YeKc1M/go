@@ -3,4 +3,4 @@ kind: HelloType
 metadata:
   name: hello
 spec:
-  message: hello world 123
+  message: hello world 1
