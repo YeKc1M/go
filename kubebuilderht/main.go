@@ -16,12 +16,22 @@ limitations under the License.
 
 package main
 
-import "kubebuilderht/api/controllers"
+import (
+	"fmt"
+	"kubebuilderht/api/controllers"
+)
 
 func main() {
-	controllers.WatchTemplate()
-	//for true {
-	//	//
-	//}
+	go controllers.WatchTemplate()
+
+	for true {
+		if controllers.HTReconsiler == nil {
+			break
+		}
+	}
+	fmt.Println("not nil")
+	for true {
+		//
+	}
 }
 

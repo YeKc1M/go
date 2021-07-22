@@ -18,6 +18,9 @@ import (
 var (
 	scheme       = runtime.NewScheme()
 	setupLog     = ctrl.Log.WithName("setup")
+	metricsHost               = "0.0.0.0"
+	metricsPort         int32 = 8383
+	operatorMetricsPort int32 = 8686
 	HTReconsiler *HelloTypeReconciler
 )
 
@@ -46,8 +49,8 @@ func WatchTemplate() {
 	ctrl.SetLogger(zap.New(zap.UseFlagOptions(&opts)))
 
 	mgr, err := ctrl.NewManager(ctrl.GetConfigOrDie(), ctrl.Options{
-		Scheme:                 scheme,
-		//MetricsBindAddress:     metricsAddr,
+		Scheme: scheme,
+		MetricsBindAddress:     fmt.Sprintf("%s:%d", metricsHost, metricsPort),
 		//Port:                   9443,
 		//HealthProbeBindAddress: probeAddr,
 		//LeaderElection:         enableLeaderElection,
@@ -58,12 +61,12 @@ func WatchTemplate() {
 		os.Exit(1)
 	}
 
-	helloTypeReconsiler := &HelloTypeReconciler{
+	HTReconsiler = &HelloTypeReconciler{
 		Client: mgr.GetClient(),
 		Scheme: mgr.GetScheme(),
 	}
 
-	if err = helloTypeReconsiler.SetupWithManager(mgr); err != nil {
+	if err = HTReconsiler.SetupWithManager(mgr); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "HelloType")
 		os.Exit(1)
 	}
