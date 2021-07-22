@@ -28,8 +28,8 @@ type HelloTypeSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 
-	// Message is an example field of HelloType. Edit hellotype_types.go to remove/update
-	Message string `json:"message,omitempty"`
+	// Foo is an example field of HelloType. Edit hellotype_types.go to remove/update
+	Message string `json:"foo,omitempty"`
 }
 
 // HelloTypeStatus defines the observed state of HelloType

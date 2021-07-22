@@ -5,7 +5,7 @@ metadata:
   name: hellotype-editor-role
 rules:
 - apiGroups:
-  - foo.com
+  - foo.com.kubekuiderht
   resources:
   - hellotypes
   verbs:
@@ -17,7 +17,7 @@ rules:
   - update
   - watch
 - apiGroups:
-  - foo.com
+  - foo.com.kubekuiderht
   resources:
   - hellotypes/status
   verbs:

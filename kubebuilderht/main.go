@@ -17,21 +17,12 @@ limitations under the License.
 package main
 
 import (
-	"fmt"
+	// Import all Kubernetes client auth plugins (e.g. Azure, GCP, OIDC, etc.)
+	// to ensure that exec-entrypoint and run can make use of them.
+	_ "k8s.io/client-go/plugin/pkg/client/auth"
 	"kubebuilderht/api/controllers"
 )
 
 func main() {
-	go controllers.WatchTemplate()
-
-	for true {
-		if controllers.HTReconsiler == nil {
-			break
-		}
-	}
-	fmt.Println("not nil")
-	for true {
-		//
-	}
+	controllers.WatchTemplate()
 }
-

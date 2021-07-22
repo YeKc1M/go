@@ -34,9 +34,9 @@ type HelloTypeReconciler struct {
 	Scheme *runtime.Scheme
 }
 
-//+kubebuilder:rbac:groups=foo.com,resources=hellotypes,verbs=get;list;watch;create;update;patch;delete
-//+kubebuilder:rbac:groups=foo.com,resources=hellotypes/status,verbs=get;update;patch
-//+kubebuilder:rbac:groups=foo.com,resources=hellotypes/finalizers,verbs=update
+//+kubebuilder:rbac:groups=foo.com.kubekuiderht,resources=hellotypes,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=foo.com.kubekuiderht,resources=hellotypes/status,verbs=get;update;patch
+//+kubebuilder:rbac:groups=foo.com.kubekuiderht,resources=hellotypes/finalizers,verbs=update
 
 // Reconcile is part of the main kubernetes reconciliation loop which aims to
 // move the current state of the cluster closer to the desired state.
@@ -60,6 +60,8 @@ func (r *HelloTypeReconciler) Reconcile(ctx context.Context, req ctrl.Request) (
 	fmt.Println(ht)
 	fmt.Println(time.Now())
 	fmt.Println("---------------------------")
+
+	return ctrl.Result{}, nil
 
 	return ctrl.Result{}, nil
 }

@@ -1,16 +1,16 @@
-domain: my.domain
+domain: kubekuiderht
 layout:
 - go.kubebuilder.io/v3
 projectName: kubebuilderht
-repo: my.domain/hellotype
+repo: kubebuilderht
 resources:
 - api:
     crdVersion: v1
     namespaced: true
   controller: true
-  domain: my.domain
+  domain: kubekuiderht
   group: foo.com
   kind: HelloType
-  path: my.domain/hellotype/api/v1
+  path: kubebuilderht/api/v1
   version: v1
 version: "3"

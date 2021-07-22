@@ -1,4 +1,4 @@
-apiVersion: foo.com.my.domain/v1
+apiVersion: foo.com.kubekuiderht/v1
 kind: HelloType
 metadata:
   name: hellotype-sample

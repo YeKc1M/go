@@ -5,7 +5,7 @@ metadata:
   name: hellotype-viewer-role
 rules:
 - apiGroups:
-  - foo.com
+  - foo.com.kubekuiderht
   resources:
   - hellotypes
   verbs:
@@ -13,7 +13,7 @@ rules:
   - list
   - watch
 - apiGroups:
-  - foo.com
+  - foo.com.kubekuiderht
   resources:
   - hellotypes/status
   verbs:
