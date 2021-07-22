@@ -3,6 +3,7 @@ module kubebuilderht
 go 1.16
 
 require (
+	github.com/emicklei/go-restful v2.9.5+incompatible
 	github.com/onsi/ginkgo v1.16.4
 	github.com/onsi/gomega v1.13.0
 	k8s.io/apimachinery v0.21.2
