@@ -14,6 +14,7 @@ func HTService() (ws *restful.WebService) {
 		CreateResp(response, http.StatusOK, "hello world!")
 	}))
 	ws.Route(ws.GET("/get").To(getHello))
+	ws.Route(ws.GET("/list").To(listHT))
 
 	return ws
 }
@@ -21,6 +22,12 @@ func HTService() (ws *restful.WebService) {
 func getHello(req *restful.Request, resp *restful.Response) {
 	waitForHTReconsilerAvailable()
 	controllers.HTReconsiler.GetHelloType("default", "hello")
+	CreateResp(resp, http.StatusOK, "done")
+}
+
+func listHT(req *restful.Request, resp *restful.Response) {
+	waitForHTReconsilerAvailable()
+	controllers.HTReconsiler.ListHelloType()
 	CreateResp(resp, http.StatusOK, "done")
 }
 

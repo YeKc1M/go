@@ -11,6 +11,7 @@ import (
 	foocomv1 "kubebuilderht/api/v1"
 	"os"
 	ctrl "sigs.k8s.io/controller-runtime"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 	"time"
 )
@@ -99,4 +100,14 @@ func (r *HelloTypeReconciler) GetHelloType(namespace string, name string) *fooco
 	fmt.Println(time.Now(), "get")
 	fmt.Println(getRes)
 	return getRes
+}
+
+func (r *HelloTypeReconciler) ListHelloType()  {
+	htList := foocomv1.HelloTypeList{}
+	err := r.List(context.TODO(), &htList, client.InNamespace("default"))
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(time.Now() ,"list")
+	fmt.Println(htList)
 }
