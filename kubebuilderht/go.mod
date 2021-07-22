@@ -1,4 +1,4 @@
-module kubebuilderht/hellotype
+module kubebuilderht
 
 go 1.16
 
