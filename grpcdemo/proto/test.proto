@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+//import "google/protobuf/wrappers.proto";
+//import "google/protobuf/struct.proto";
+
+option go_package = "sdk/template_engine";
+
+package template_engine;
+
+service TestEngine {
+  rpc HelloWorld(BasicRes) returns (StrResp) {
+    option (google.api.http) = {
+      get: "/hello"
+    };
+  }
+
+  rpc Echo(StrRes) returns (StrResp){
+    option (google.api.http) = {
+      get: "/echo"
+    };
+  }
+}
+
+message BasicRes {
+  //
+}
+
+message StrResp {
+  string msg = 1;
+}
+
+message StrRes {
+  string msg = 1;
+}
