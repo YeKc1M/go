@@ -18,8 +18,8 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type TestEngineClient interface {
-	HelloWorld(ctx context.Context, in *BasicRes, opts ...grpc.CallOption) (*StrResp, error)
-	Echo(ctx context.Context, in *StrRes, opts ...grpc.CallOption) (*StrResp, error)
+	Echo(ctx context.Context, in *StringMessage, opts ...grpc.CallOption) (*StringMessage, error)
+	Hello(ctx context.Context, in *BasicMessage, opts ...grpc.CallOption) (*StringMessage, error)
 }
 
 type testEngineClient struct {
@@ -30,18 +30,18 @@ func NewTestEngineClient(cc grpc.ClientConnInterface) TestEngineClient {
 	return &testEngineClient{cc}
 }
 
-func (c *testEngineClient) HelloWorld(ctx context.Context, in *BasicRes, opts ...grpc.CallOption) (*StrResp, error) {
-	out := new(StrResp)
-	err := c.cc.Invoke(ctx, "/template_engine.TestEngine/HelloWorld", in, out, opts...)
+func (c *testEngineClient) Echo(ctx context.Context, in *StringMessage, opts ...grpc.CallOption) (*StringMessage, error) {
+	out := new(StringMessage)
+	err := c.cc.Invoke(ctx, "/template_engine.TestEngine/Echo", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *testEngineClient) Echo(ctx context.Context, in *StrRes, opts ...grpc.CallOption) (*StrResp, error) {
-	out := new(StrResp)
-	err := c.cc.Invoke(ctx, "/template_engine.TestEngine/Echo", in, out, opts...)
+func (c *testEngineClient) Hello(ctx context.Context, in *BasicMessage, opts ...grpc.CallOption) (*StringMessage, error) {
+	out := new(StringMessage)
+	err := c.cc.Invoke(ctx, "/template_engine.TestEngine/Hello", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -52,20 +52,20 @@ func (c *testEngineClient) Echo(ctx context.Context, in *StrRes, opts ...grpc.Ca
 // All implementations must embed UnimplementedTestEngineServer
 // for forward compatibility
 type TestEngineServer interface {
-	HelloWorld(context.Context, *BasicRes) (*StrResp, error)
-	Echo(context.Context, *StrRes) (*StrResp, error)
-	mustEmbedUnimplementedTestEngineServer()
+	Echo(context.Context, *StringMessage) (*StringMessage, error)
+	Hello(context.Context, *BasicMessage) (*StringMessage, error)
+	//mustEmbedUnimplementedTestEngineServer()
 }
 
 // UnimplementedTestEngineServer must be embedded to have forward compatible implementations.
 type UnimplementedTestEngineServer struct {
 }
 
-func (UnimplementedTestEngineServer) HelloWorld(context.Context, *BasicRes) (*StrResp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method HelloWorld not implemented")
-}
-func (UnimplementedTestEngineServer) Echo(context.Context, *StrRes) (*StrResp, error) {
+func (UnimplementedTestEngineServer) Echo(context.Context, *StringMessage) (*StringMessage, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Echo not implemented")
+}
+func (UnimplementedTestEngineServer) Hello(context.Context, *BasicMessage) (*StringMessage, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Hello not implemented")
 }
 func (UnimplementedTestEngineServer) mustEmbedUnimplementedTestEngineServer() {}
 
@@ -80,26 +80,8 @@ func RegisterTestEngineServer(s grpc.ServiceRegistrar, srv TestEngineServer) {
 	s.RegisterService(&TestEngine_ServiceDesc, srv)
 }
 
-func _TestEngine_HelloWorld_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(BasicRes)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(TestEngineServer).HelloWorld(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/template_engine.TestEngine/HelloWorld",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TestEngineServer).HelloWorld(ctx, req.(*BasicRes))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _TestEngine_Echo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(StrRes)
+	in := new(StringMessage)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -111,7 +93,25 @@ func _TestEngine_Echo_Handler(srv interface{}, ctx context.Context, dec func(int
 		FullMethod: "/template_engine.TestEngine/Echo",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TestEngineServer).Echo(ctx, req.(*StrRes))
+		return srv.(TestEngineServer).Echo(ctx, req.(*StringMessage))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TestEngine_Hello_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BasicMessage)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestEngineServer).Hello(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/template_engine.TestEngine/Hello",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestEngineServer).Hello(ctx, req.(*BasicMessage))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -124,12 +124,12 @@ var TestEngine_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*TestEngineServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "HelloWorld",
-			Handler:    _TestEngine_HelloWorld_Handler,
-		},
-		{
 			MethodName: "Echo",
 			Handler:    _TestEngine_Echo_Handler,
+		},
+		{
+			MethodName: "Hello",
+			Handler:    _TestEngine_Hello_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -4,32 +4,38 @@ import "google/api/annotations.proto";
 //import "google/protobuf/wrappers.proto";
 //import "google/protobuf/struct.proto";
 
-option go_package = "sdk/template_engine";
+option go_package = "pb/template_engine";
 
 package template_engine;
 
 service TestEngine {
-  rpc HelloWorld(BasicRes) returns (StrResp) {
+  rpc Echo(StringMessage) returns (StringMessage) {
+    option (google.api.http) = {
+      post: "/echo"
+      body: "*"
+    };
+  };
+  rpc Hello(BasicMessage) returns (StringMessage) {
     option (google.api.http) = {
       get: "/hello"
     };
   }
-
-  rpc Echo(StrRes) returns (StrResp){
-    option (google.api.http) = {
-      get: "/echo"
-    };
-  }
+//  rpc TestByte(ByteMessage) returns (BasicMessage) {
+//    option (google.api.http) = {
+//      post: "/bytes"
+//    };
+//  }
 }
 
-message BasicRes {
-  //
+message BasicMessage{
+
 }
 
-message StrResp {
+message StringMessage {
   string msg = 1;
 }
 
-message StrRes {
-  string msg = 1;
-}
+//message ByteMessage {
+//  string name = 1;
+//  bytes data = 2;
+//}
