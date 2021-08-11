@@ -1,4 +1,4 @@
-package main
+package gateway
 
 import (
 	"context"
@@ -28,11 +28,11 @@ func run() error {
 		return err
 	}
 
-	log.Println("服务开启")
+	log.Println("gateway starts at 8080")
 	return http.ListenAndServe(":8080", mux)
 }
 
-func main() {
+func Main() {
 	flag.Parse()
 	defer glog.Flush()
 

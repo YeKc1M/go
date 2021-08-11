@@ -1,4 +1,4 @@
-package main
+package rpc
 
 import (
 	"context"
@@ -30,7 +30,7 @@ func (s *server) TestByte(ctx context.Context, in *pb.ByteMessage) (*pb.BasicMes
 	return &pb.BasicMessage{}, nil
 }
 
-func main() {
+func Main() {
 	lis, err := net.Listen("tcp", PORT)
 
 	if err != nil {
@@ -39,6 +39,6 @@ func main() {
 
 	s := grpc.NewServer()
 	pb.RegisterTestEngineServer(s, &server{})
-	log.Println("rpc服务已经开启")
+	log.Printf("rpc service starts on port %s \n", PORT)
 	s.Serve(lis)
 }
