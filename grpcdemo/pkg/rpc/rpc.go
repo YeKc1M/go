@@ -24,6 +24,12 @@ func (s *server) Hello(ctx context.Context, in *pb.BasicMessage) (*pb.StringMess
 	return &pb.StringMessage{Msg: "hello world!"}, nil
 }
 
+func (s *server) TestByte(ctx context.Context, in *pb.ByteMessage) (*pb.BasicMessage, error)  {
+	log.Println("/bytes")
+	log.Printf("%s\n", in.Data)
+	return &pb.BasicMessage{}, nil
+}
+
 func main() {
 	lis, err := net.Listen("tcp", PORT)
 

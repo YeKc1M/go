@@ -20,11 +20,12 @@ service TestEngine {
       get: "/hello"
     };
   }
-//  rpc TestByte(ByteMessage) returns (BasicMessage) {
-//    option (google.api.http) = {
-//      post: "/bytes"
-//    };
-//  }
+  rpc TestByte(ByteMessage) returns (BasicMessage) {
+    option (google.api.http) = {
+      post: "/bytes"
+      body: "*"
+    };
+  }
 }
 
 message BasicMessage{
@@ -35,7 +36,7 @@ message StringMessage {
   string msg = 1;
 }
 
-//message ByteMessage {
-//  string name = 1;
-//  bytes data = 2;
-//}
+message ByteMessage {
+  string name = 1;
+  bytes data = 2;
+}

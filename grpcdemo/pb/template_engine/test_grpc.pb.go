@@ -20,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion7
 type TestEngineClient interface {
 	Echo(ctx context.Context, in *StringMessage, opts ...grpc.CallOption) (*StringMessage, error)
 	Hello(ctx context.Context, in *BasicMessage, opts ...grpc.CallOption) (*StringMessage, error)
+	TestByte(ctx context.Context, in *ByteMessage, opts ...grpc.CallOption) (*BasicMessage, error)
 }
 
 type testEngineClient struct {
@@ -48,12 +49,22 @@ func (c *testEngineClient) Hello(ctx context.Context, in *BasicMessage, opts ...
 	return out, nil
 }
 
+func (c *testEngineClient) TestByte(ctx context.Context, in *ByteMessage, opts ...grpc.CallOption) (*BasicMessage, error) {
+	out := new(BasicMessage)
+	err := c.cc.Invoke(ctx, "/template_engine.TestEngine/TestByte", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // TestEngineServer is the server API for TestEngine service.
 // All implementations must embed UnimplementedTestEngineServer
 // for forward compatibility
 type TestEngineServer interface {
 	Echo(context.Context, *StringMessage) (*StringMessage, error)
 	Hello(context.Context, *BasicMessage) (*StringMessage, error)
+	TestByte(context.Context, *ByteMessage) (*BasicMessage, error)
 	//mustEmbedUnimplementedTestEngineServer()
 }
 
@@ -66,6 +77,9 @@ func (UnimplementedTestEngineServer) Echo(context.Context, *StringMessage) (*Str
 }
 func (UnimplementedTestEngineServer) Hello(context.Context, *BasicMessage) (*StringMessage, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Hello not implemented")
+}
+func (UnimplementedTestEngineServer) TestByte(context.Context, *ByteMessage) (*BasicMessage, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TestByte not implemented")
 }
 func (UnimplementedTestEngineServer) mustEmbedUnimplementedTestEngineServer() {}
 
@@ -116,6 +130,24 @@ func _TestEngine_Hello_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
+func _TestEngine_TestByte_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ByteMessage)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestEngineServer).TestByte(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/template_engine.TestEngine/TestByte",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestEngineServer).TestByte(ctx, req.(*ByteMessage))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // TestEngine_ServiceDesc is the grpc.ServiceDesc for TestEngine service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -130,6 +162,10 @@ var TestEngine_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Hello",
 			Handler:    _TestEngine_Hello_Handler,
+		},
+		{
+			MethodName: "TestByte",
+			Handler:    _TestEngine_TestByte_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
