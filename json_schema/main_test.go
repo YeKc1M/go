@@ -78,3 +78,37 @@ func Test_map(t *testing.T) {
 	assert.Nil(t, err)
 	assert.True(t, res.Valid())
 }
+
+func Test_struct(t *testing.T) {
+	schema_str := `{
+		"type": "object",
+		"properties":{
+			"cluster":{
+				"type":"object",
+				"properties":{
+					"name":{
+						"type":"string"
+					},
+					"kubeconfig":{
+						"type":"string"
+					}
+				}
+				"required":["name"]
+			},
+			"namespace":{
+				"type":"string"
+			},
+			"name":{
+				"type":"string"
+			},
+			"database":{
+				"type":"array",
+				"items":{
+					"type":"string"
+				}
+			}
+		},
+		"required":["cluster", "namespace", "name", "database"]
+	}`
+	// todo
+}
