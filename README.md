@@ -14,6 +14,12 @@ main.go contains some operations on kubernetes basic components
 
 dynamicclient package contains operations on crd using dynamic client
 
+## grpcdemo
+
+a grpc server demo
+
+## json schema
+
 ## typedclientdemo
 
 operations on crd based on typed client without code-generation

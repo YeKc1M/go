@@ -3,6 +3,7 @@ package json_schema
 import (
 	"github.com/stretchr/testify/assert"
 	"github.com/xeipuuv/gojsonschema"
+	"json_schema/model"
 	"testing"
 )
 
@@ -92,7 +93,7 @@ func Test_struct(t *testing.T) {
 					"kubeconfig":{
 						"type":"string"
 					}
-				}
+				},
 				"required":["name"]
 			},
 			"namespace":{
@@ -110,5 +111,18 @@ func Test_struct(t *testing.T) {
 		},
 		"required":["cluster", "namespace", "name", "database"]
 	}`
-	// todo
+	schema := gojsonschema.NewStringLoader(schema_str)
+	app := model.App{
+		Cluster: model.Cluster{
+			Name:       "cluster",
+			Kubeconfig: "kubeconfig",
+		},
+		Namespace: "namespace",
+		Name:      "name",
+		Database:  []string{"postgresql", "redis", "mysql"},
+	}
+	json := gojsonschema.NewGoLoader(app)
+	res, err := gojsonschema.Validate(schema, json)
+	assert.Nil(t, err)
+	assert.True(t, res.Valid())
 }
