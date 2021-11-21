@@ -18,11 +18,19 @@ dynamicclient package contains operations on crd using dynamic client
 
 a grpc server demo
 
+## kubebuilderht
+
+a controller demo using kubebuilder
+
 ## json schema
 
 ## typedclientdemo
 
 operations on crd based on typed client without code-generation
+
+## ptdemo
+
+platinum searching demo
 
 # to do
 
