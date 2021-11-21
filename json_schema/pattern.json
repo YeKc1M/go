@@ -1,0 +1,14 @@
+{
+    "type":"object",
+    "properties":{
+        "data":{
+            "type":"string",
+            "pattern":"abc.*"
+        },
+        "url":{
+            "type":"string",
+            "pattern":"https://.*"
+        }
+    },
+    "required":["data"]
+}

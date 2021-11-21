@@ -3,6 +3,7 @@ package json_schema
 import (
 	"github.com/stretchr/testify/assert"
 	"github.com/xeipuuv/gojsonschema"
+	"io/ioutil"
 	"json_schema/model"
 	"testing"
 )
@@ -123,6 +124,37 @@ func Test_struct(t *testing.T) {
 	}
 	json := gojsonschema.NewGoLoader(app)
 	res, err := gojsonschema.Validate(schema, json)
+	assert.Nil(t, err)
+	assert.True(t, res.Valid())
+}
+
+func Test_Pattern(t *testing.T) {
+	bs, err := ioutil.ReadFile("./pattern.json")
+	assert.Nil(t, err)
+	schema := gojsonschema.NewStringLoader(string(bs))
+	json_str := `{
+		"data":"abc"
+	}`
+	json := gojsonschema.NewStringLoader(json_str)
+	res, err := gojsonschema.Validate(schema, json)
+	assert.Nil(t, err)
+	assert.True(t, res.Valid())
+	json_str = `{"data":"abc65213"}`
+	json = gojsonschema.NewStringLoader(json_str)
+	res, err = gojsonschema.Validate(schema, json)
+	assert.Nil(t, err)
+	assert.True(t, res.Valid())
+	json_str = `{"data":"a423"}`
+	json = gojsonschema.NewStringLoader(json_str)
+	res, err = gojsonschema.Validate(schema, json)
+	assert.Nil(t, err)
+	assert.False(t, res.Valid())
+	json_str = `{
+		"data":"abc",
+		"url":"https://123"
+	}`
+	json = gojsonschema.NewStringLoader(json_str)
+	res, err = gojsonschema.Validate(schema, json)
 	assert.Nil(t, err)
 	assert.True(t, res.Valid())
 }
