@@ -177,3 +177,5 @@ func Test_Kubeconfig(t *testing.T) {
 	assert.True(t, res.Valid())
 	t.Log(res.Errors())
 }
+
+// todo test json schema if then else
