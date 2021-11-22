@@ -1,5 +1,8 @@
 {
   "type": "object",
+  "additionalProperties": {
+    "const": null
+  },
   "properties": {
     "apiVersion": {
       "type": "string",

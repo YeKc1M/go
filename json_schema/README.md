@@ -1,16 +1,145 @@
 # json schema
 
+### if then else
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "street": {
+      "type": "string"
+    },
+    "country": {
+      "enum": ["United States of America", "Canada"]
+    }
+  },
+  "if": {
+    "properties": {
+      "country": {
+        "const": "United States of America"
+      }
+    }
+  },
+  "then": {
+    "properties": {
+      "postal_code": {
+        "pattern": "[0-9]{5}(-[0-9]{4})?"
+      }
+    }
+  },
+  "else": {
+    "properties": {
+      "postal_code": {
+        "pattern": "[A-Z0-9]{6}"
+      }
+    }
+  }
+}
+```
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "street_address": {
+      "type": "string"
+    },
+    "country": {
+      "enum": ["US", "Canada", "Netherlands"]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "country": {
+            "const": "US"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "postal_code": {
+            "pattern": "[0-9]{5}(-[0-9]{4}?)"
+          }
+        }
+      }
+    },{
+      "if": {
+        "properties": {
+          "country": {
+            "const": "Netherlands"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "postal_code": {
+            "pattern": "[0-9]{4} [A-Z]{2}"
+          }
+        }
+      }
+    },{
+      "if": {
+        "properties": {
+          "country": {
+            "const": "Canada"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "postal_code": {
+            "pattern": "[A-Z0-9]{6}"
+          }
+        }
+      }
+    }
+  ]
+}
+```
+
 ## string
 
 - maxLength
 - minLength
 - enum
+- format
+  - date
+  - time
+  - datetime
+  - email
+  - idn-email
+  - hostname
+  - idn-hostname
+  - ipv4
+  - ipv6
+  - uri
+  - uri-reference
+  - iri
+  - iri-reference
+  - uri-template
+  - json-pointer
+  - relative-json-pointer
+  - regex
 
 ## boolean
 
 ## integer
 
+- multipleOf
+- maximum小于等于
+- exclusiveMaximum
+- minimum
+- exclusiveMinimum
+
 ## number
+
+- multipleOf
+- maximum
+- exclusiveMaximum
+- minimum
+- exclusiveMinimum
 
 ## const
 
@@ -19,11 +148,25 @@
 - required
 - minProperties
 - maxProperties
+- patternProperties
+  - 验证key满足条件的value是否符合规定
+- additionalProperties
+  - 验证不匹配条件key的value
+- dependencies略
+- propertyNames
+  - 验证key是否满足该json schema
 
 ## array
 
 - maxItems
 - minItems
+- items
+- additionalItems
+  - 超出规定位置时有效
+  - 当items为一个json schema数组时有效
+- uniqueItems
+  - true/false
+- contains数组中是否包含
 
 ## 组合模式
 
