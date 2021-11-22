@@ -165,6 +165,7 @@ func Test_Kubeconfig(t *testing.T) {
 	assert.Nil(t, err)
 	m := map[string]interface{}{}
 	err = yaml.Unmarshal(bs, &m)
+	t.Log(m)
 	json := gojsonschema.NewGoLoader(m)
 
 	schemaBs, err := ioutil.ReadFile("./file/kubeschema.json")
