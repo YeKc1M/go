@@ -5,6 +5,7 @@ import (
 	"github.com/xeipuuv/gojsonschema"
 	"io/ioutil"
 	"json_schema/model"
+	"sigs.k8s.io/yaml"
 	"testing"
 )
 
@@ -157,4 +158,21 @@ func Test_Pattern(t *testing.T) {
 	res, err = gojsonschema.Validate(schema, json)
 	assert.Nil(t, err)
 	assert.True(t, res.Valid())
+}
+
+func Test_Kubeconfig(t *testing.T) {
+	bs, err := ioutil.ReadFile("./file/kubeconfig.yaml")
+	assert.Nil(t, err)
+	m := map[string]interface{}{}
+	err = yaml.Unmarshal(bs, &m)
+	json := gojsonschema.NewGoLoader(m)
+
+	schemaBs, err := ioutil.ReadFile("./file/kubeschema.json")
+	assert.Nil(t, err)
+	schema := gojsonschema.NewStringLoader(string(schemaBs))
+
+	res, err := gojsonschema.Validate(schema, json)
+	assert.Nil(t, err)
+	assert.True(t, res.Valid())
+	t.Log(res.Errors())
 }

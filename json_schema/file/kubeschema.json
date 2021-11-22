@@ -1,0 +1,87 @@
+{
+  "type": "object",
+  "properties": {
+    "apiVersion": {
+      "type": "string",
+      "pattern": "v1$"
+    },
+    "kind": {
+      "type": "string",
+      "pattern": "Config$"
+    },
+    "current-context": {
+      "type": "string"
+    },
+    "clusters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "cluster": {
+            "type": "object",
+            "properties": {
+              "certificate-authority-data": {
+                "type": "string"
+              },
+              "server": {
+                "type": "string",
+                "pattern": "https://.*$"
+              }
+            },
+            "required": ["certificate-authority-data", "server"]
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": ["cluster", "name"]
+      }
+    },
+    "contexts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "context": {
+            "type": "object",
+            "properties": {
+              "cluster": {
+                "type": "string"
+              },
+              "user": {
+                "type": "string"
+              }
+            },
+            "required": ["cluster", "user"]
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": ["context", "name"]
+      }
+    },
+    "users": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "user": {
+            "type": "object",
+            "properties": {
+              "token": {
+                "type": "string"
+              }
+            },
+            "required": ["token"]
+          }
+        },
+        "required": ["name", "user"]
+      }
+    }
+  },
+  "required": ["apiVersion", "kind", "clusters", "current-context"]
+}
