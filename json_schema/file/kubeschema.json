@@ -92,6 +92,9 @@
         },
         "required": ["name", "user"]
       }
+    },
+    "preferences": {
+      "type": "object"
     }
   },
   "required": ["apiVersion", "kind", "clusters", "current-context"]
