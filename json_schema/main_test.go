@@ -178,4 +178,21 @@ func Test_Kubeconfig(t *testing.T) {
 	t.Log(res.Errors())
 }
 
+func Test_BytesLoader(t *testing.T) {
+	bs, err := ioutil.ReadFile("./file/kubeconfig.yaml")
+	assert.Nil(t, err)
+	jsonBs, err := yaml.YAMLToJSON(bs)
+	assert.Nil(t, err)
+	json := gojsonschema.NewBytesLoader(jsonBs)
+
+	schemaBs, err := ioutil.ReadFile("./file/kubeschema.json")
+	assert.Nil(t, err)
+	schema := gojsonschema.NewStringLoader(string(schemaBs))
+
+	res, err := gojsonschema.Validate(schema, json)
+	assert.Nil(t, err)
+	assert.True(t, res.Valid())
+	t.Log(res.Errors())
+}
+
 // todo test json schema if then else
