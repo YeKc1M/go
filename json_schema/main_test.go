@@ -196,3 +196,17 @@ func Test_BytesLoader(t *testing.T) {
 }
 
 // todo test json schema if then else
+func Test_If(t *testing.T) {
+	bs, err := ioutil.ReadFile("./file/if.json")
+	assert.Nil(t, err)
+	schema := gojsonschema.NewBytesLoader(bs)
+
+	jsonBs, err := ioutil.ReadFile("./file/if_object.json")
+	assert.Nil(t, err)
+	json := gojsonschema.NewBytesLoader(jsonBs)
+
+	res, err := gojsonschema.Validate(schema, json)
+	assert.Nil(t, err)
+	t.Log(res.Valid())
+	t.Log(res.Errors())
+}
