@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"log"
+	"webhook/model"
 )
 
 func main() {
@@ -18,6 +19,13 @@ func main() {
 		c.String(200, "done")
 		return
 
+	})
+	r.POST("/json/inline", func(c *gin.Context) {
+		var app model.App
+		c.Bind(&app)
+		log.Println(app)
+		c.String(200, "")
+		return
 	})
 	err := r.Run()
 	if err != nil {
